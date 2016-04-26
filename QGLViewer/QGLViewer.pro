@@ -105,7 +105,7 @@ contains( DEFINES, NO_VECTORIAL_RENDER ) {
 # ---------------
 # --  U n i x  --
 # ---------------
-unix {
+unix | win32-g++ {
 	CONFIG -= debug debug_and_release
 	CONFIG *= release
 
@@ -143,7 +143,7 @@ unix {
 		QMAKE_LIBS_OPENGL *= -lglut
 	}
 
-	macx|darwin-g++ {
+	win32-g++|macx|darwin-g++ {
 		# GLU is part of the OpenGL framework
 	} else {
 		QMAKE_LIBS_OPENGL *= -lGLU
@@ -154,8 +154,10 @@ unix {
 
 	# Adds a -P option so that "make install" as root creates files owned by root and links are preserved.
 	# This is not a standard option, and it may have to be removed on old Unix flavors.
-	!hpux {
-		QMAKE_COPY_FILE = $${QMAKE_COPY_FILE} -P
+        !win32-g++ {
+           !hpux { 
+               QMAKE_COPY_FILE = $${QMAKE_COPY_FILE} -P
+           }
 	}
 
 	# Make much smaller libraries (and packages) by removing debugging informations
@@ -217,7 +219,7 @@ macx|darwin-g++ {
 
 		# Specific paths for the installation of the framework.
 		!isEmpty( LIB_DIR ) {
-			target.path = $${LIB_DIR}
+			target.path = $${LsIB_DIR}
 		}
 
 		# Framework already contains includes
